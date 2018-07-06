@@ -11,6 +11,6 @@ function! s:ParseFileTest2()
 
   call testify#assert#equals(dotoos.directives['TITLE'], 'Dotoo Tasks')
   call testify#assert#equals(dotoos.directives['EMAIL'], 'dhruva.sagar@gmail.com')
-  call testify#assert#equals(dotoos.directives['AUTHOR'], 'Dhruva Saga')
+  call testify#assert#equals(dotoos.directives['AUTHOR'], 'Dhruva Sagar')
 endfunction
 call testify#it('dotoo#parser#parsefile should have right directives', function('s:ParseFileTest2'))

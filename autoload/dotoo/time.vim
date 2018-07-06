@@ -66,6 +66,11 @@ function! s:localtime(...)
         \, 'sepoch' : ts
         \, 'repeat' : rp
         \}
+
+  if empty(datetime.sepoch)
+    datetime.sepoch = localtime()
+  endif
+
   let datetime.depoch = s:jd(datetime.year, datetime.month, datetime.day)
         \ - s:epoch_jd
   let real_ts = s:days_to_seconds(datetime.depoch)

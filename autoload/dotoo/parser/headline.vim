@@ -116,7 +116,7 @@ endfunction
 
 function! s:headline_methods.close() dict
   if self.is_split_open()
-    quit
+    hide
     exec self.split_winnr . 'wincmd w'
     call remove(self, 'split_open')
     call remove(self, 'split_winnr')
@@ -265,5 +265,47 @@ function! dotoo#parser#headline#get(...)
   let lnum = a:0 == 2 ? a:2 : line('.')
   if has_key(s:headlines, file)
     return get(s:headlines[file], lnum)
+  endif
+endfunction
+
+function! dotoo#parser#headline#complete(ArgLead, CmdLine, CursorPos)
+  let headlines = []
+  for key in keys(s:headlines)
+    let _key = fnamemodify(key, ':p:t:r')
+    if empty(a:ArgLead) || _key =~# '^'.a:ArgLead[:stridx(a:ArgLead, ':')-1]
+      if _key ==# a:ArgLead
+        call add(headlines, _key)
+      endif
+      " since s:headlines stores as a key-pair of lnum-headline we need to use
+      " values
+      let headline = values(s:headlines[key])[0]
+      if !empty(a:ArgLead) && a:ArgLead =~# ':.'
+        let title = split(a:ArgLead, ':')[1]
+        let hdlns = headline.filter("v:val.title =~# '^" .title. "'")
+      else
+        let hdlns = headline.filter('1')
+      endif
+      call extend(headlines, map(hdlns, "_key . ':' . v:val.title"))
+    else
+      let headline = s:headlines[key]
+      let hdlns = headline.filter("v:val.title =~# '^" . a:ArgLead . "'")
+      call extend(headlines, map(hdlns, "_key . ':' . v:val.title"))
+    endif
+  endfor
+  return headlines
+endfunction
+
+function! dotoo#parser#headline#get_by_title(file_title)
+  if a:file_title =~# ':'
+    let [filekey, title] = split(a:file_title, ':')
+    let bufname = bufname(filekey)
+    let bufname = empty(bufname) ? bufname(filekey . '.{dotoo,org}') : bufname
+    let dotoo = get(s:headlines, bufname, '')
+    if !empty(dotoo)
+      let headlines = dotoo.filter("v:val.title =~# '" . title . "'")
+      if !empty(headlines) | return headlines[0] | endif
+    endif
+  else
+    return a:file_title
   endif
 endfunction

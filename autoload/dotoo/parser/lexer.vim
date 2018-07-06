@@ -57,11 +57,11 @@ function! s:type(line)
 endfunction
 
 function! s:tokenize_line(lnum, line)
-  let token = {}
-  let token.lnum = a:lnum
-  let token.type = s:type(a:line)
-  let token.content = s:syntax[token.type].matchlist(a:line)
-  return token
+  return dotoo#parser#token#new({
+        \ 'lnum': a:lnum,
+        \ 'type': s:type(a:line),
+        \ 'content': s:syntax[s:type(a:line)].matchlist(a:line)
+        \ })
 endfunction
 
 " Public Api {{{1

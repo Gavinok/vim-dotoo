@@ -219,6 +219,8 @@ hi def link hyperlink Underlined
 " Note:
 " - $LaTeX$ uses the tex.vim syntax for its conceal properties
 " - Inspired by https://github.com/vim-pandoc/vim-pandoc-syntax
+" - the conceal settings follows your g:tex_conceal setting for
+"   more info run :h tex-conceal.
 " Ref: https://orgmode.org/manual/LaTeX-fragments.html#LaTeX-fragments
 syntax include @LATEX syntax/tex.vim
 syntax region dotoo_math      start="\S\@<=\$\|\$\S\@="   end="\S\@<=\$\|\$\S\@="  keepend oneline contains=@LATEX

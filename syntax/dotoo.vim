@@ -12,7 +12,7 @@
 " - +strike-through+ doesn't work on Vim / gVim
 " - the non-standard `code' markup is also supported
 " - =code= and ~verbatim~ are also supported as block-level markup, see below.
-" - $LaTeX$ uses the tex.vim syntax for its conceal properties
+"
 " Ref: http://orgmode.org/manual/Emphasis-and-monospace.html
 "syntax match org_bold /\*[^ ]*\*/
 
@@ -23,8 +23,6 @@ endif
 " FIXME: Always make dotoo_bold syntax define before dotoo_heading syntax
 "        to make sure that dotoo_heading syntax got higher priority(help :syn-priority) than dotoo_bold.
 "        If there is any other good solution, please help fix it.
-syntax include @LATEX syntax/tex.vim
-syntax region dotoo_math      start="\S\@<=\$\|\$\S\@="   end="\S\@<=\$\|\$\S\@="  keepend oneline contains=@LATEX
 syntax region dotoo_bold      start="\S\@<=\*\|\*\S\@="   end="\S\@<=\*\|\*\S\@="  keepend oneline
 syntax region dotoo_italic    start="\S\@<=\/\|\/\S\@="   end="\S\@<=\/\|\/\S\@="  keepend oneline
 syntax region dotoo_underline start="\S\@<=_\|_\S\@="       end="\S\@<=_\|_\S\@="    keepend oneline
@@ -216,6 +214,17 @@ syntax match hyperlinkURL				    contained "[^][]*\]\[" conceal
 syntax match hyperlinkBracketsRight	contained "\]\{2}"     conceal
 hi def link hyperlink Underlined
 " }}}
+" LaTeX: {{{
+" Support for both inline and block based embedded latex
+" eg: $Latex$ for inline or $$ LaTeX $$ for a block
+" Note:
+" - $LaTeX$ uses the tex.vim syntax for its conceal properties
+" - Inspired by https://github.com/vim-pandoc/vim-pandoc-syntax
+syntax include @LATEX syntax/tex.vim
+syntax region dotoo_math      start="\S\@<=\$\|\$\S\@="   end="\S\@<=\$\|\$\S\@="  keepend oneline contains=@LATEX
+syntax region dotoo_math     start=/\$\$/                end=/\$\$/              keepend contains=@LATEX
+syntax region dotoo_math     start=/\\\@<!\\\[/          end=/\\\@<!\\\]/        keepend contains=@LATEX
+hi def link dotoo_math     String
 " Comments: {{{
 syntax match dotoo_comment /^#.*/
 hi def link dotoo_comment Comment
@@ -271,9 +280,6 @@ syntax match  dotoo_code     /^\s*:.*/
 syntax region dotoo_verbatim start="^\s*#+BEGIN_.*"      end="^\s*#+END_.*"      keepend contains=dotoo_block_delimiter
 syntax region dotoo_code     start="^\s*#+BEGIN_SRC"     end="^\s*#+END_SRC"     keepend contains=dotoo_block_delimiter
 syntax region dotoo_code     start="^\s*#+BEGIN_EXAMPLE" end="^\s*#+END_EXAMPLE" keepend contains=dotoo_block_delimiter
-syntax region dotoo_math     start=/\$\$/                end=/\$\$/              keepend contains=@LATEX
-syntax region dotoo_math     start=/\\\@<!\\\[/          end=/\\\@<!\\\]/        keepend contains=@LATEX
-hi def link dotoo_math     String
 hi def link dotoo_code     String
 hi def link dotoo_verbatim String
 " }}}

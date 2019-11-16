@@ -6,12 +6,13 @@
 " -----------------------------------------------------------------------------
 
 " Inline markup
-" *bold*, /italic/, _underline_, +strike-through+, =code=, ~verbatim~
+" *bold*, /italic/, _underline_, +strike-through+, =code=, ~verbatim~, $LaTeX$
 " Note:
 " - /italic/ is rendered as reverse in most terms (works fine in gVim, though)
 " - +strike-through+ doesn't work on Vim / gVim
 " - the non-standard `code' markup is also supported
 " - =code= and ~verbatim~ are also supported as block-level markup, see below.
+" - $LaTeX$ uses the tex.vim syntax for its conceal properties
 " Ref: http://orgmode.org/manual/Emphasis-and-monospace.html
 "syntax match org_bold /\*[^ ]*\*/
 
@@ -22,6 +23,8 @@ endif
 " FIXME: Always make dotoo_bold syntax define before dotoo_heading syntax
 "        to make sure that dotoo_heading syntax got higher priority(help :syn-priority) than dotoo_bold.
 "        If there is any other good solution, please help fix it.
+syntax include @LATEX syntax/tex.vim
+syntax region dotoo_math      start="\S\@<=\$\|\$\S\@="   end="\S\@<=\$\|\$\S\@="  keepend oneline contains=@LATEX
 syntax region dotoo_bold      start="\S\@<=\*\|\*\S\@="   end="\S\@<=\*\|\*\S\@="  keepend oneline
 syntax region dotoo_italic    start="\S\@<=\/\|\/\S\@="   end="\S\@<=\/\|\/\S\@="  keepend oneline
 syntax region dotoo_underline start="\S\@<=_\|_\S\@="       end="\S\@<=_\|_\S\@="    keepend oneline
@@ -36,7 +39,7 @@ hi def dotoo_underline term=underline cterm=underline gui=underline
 " Headings: {{{
 "" Enable Syntax HL: {{{
 let s:contains = ' contains=dotoo_timestamp,dotoo_subtask_percent,dotoo_subtask_number,dotoo_subtask_percent_100,'.
-      \ 'dotoo_subtask_number_all,dotoo_list_checkbox,dotoo_bold,dotoo_italic,dotoo_underline,' .
+      \ 'dotoo_subtask_number_all,dotoo_list_checkbox,dotoo_bold,dotoo_math,dotoo_italic,dotoo_underline,' .
       \ 'dotoo_code,dotoo_verbatim'
 if g:dotoo_heading_shade_leading_stars == 1
   let s:contains .= ',dotoo_shade_stars'
@@ -242,7 +245,7 @@ hi def link dotoo_list_def PreProc
 "
 " }}}
 " Bullet Lists: {{{
-syntax match dotoo_list_item /.*$/ contained contains=dotoo_subtask_percent,dotoo_subtask_number,dotoo_subtask_percent_100,dotoo_subtask_number_all,dotoo_list_checkbox,dotoo_bold,dotoo_italic,dotoo_underline,dotoo_code,dotoo_verbatim,dotoo_timestamp,dotoo_timestamp_inactive,dotoo_list_def 
+syntax match dotoo_list_item /.*$/ contained contains=dotoo_subtask_percent,dotoo_subtask_number,dotoo_subtask_percent_100,dotoo_subtask_number_all,dotoo_list_checkbox,dotoo_bold,dotoo_math,dotoo_italic,dotoo_underline,dotoo_code,dotoo_verbatim,dotoo_timestamp,dotoo_timestamp_inactive,dotoo_list_def 
 syntax match dotoo_list_checkbox /\[[ X-]]/ contained
 hi def link dotoo_list_checkbox     PreProc
 
@@ -268,6 +271,9 @@ syntax match  dotoo_code     /^\s*:.*/
 syntax region dotoo_verbatim start="^\s*#+BEGIN_.*"      end="^\s*#+END_.*"      keepend contains=dotoo_block_delimiter
 syntax region dotoo_code     start="^\s*#+BEGIN_SRC"     end="^\s*#+END_SRC"     keepend contains=dotoo_block_delimiter
 syntax region dotoo_code     start="^\s*#+BEGIN_EXAMPLE" end="^\s*#+END_EXAMPLE" keepend contains=dotoo_block_delimiter
+syntax region dotoo_math     start=/\$\$/                end=/\$\$/              keepend contains=@LATEX
+syntax region dotoo_math     start=/\\\@<!\\\[/          end=/\\\@<!\\\]/        keepend contains=@LATEX
+hi def link dotoo_math     String
 hi def link dotoo_code     String
 hi def link dotoo_verbatim String
 " }}}

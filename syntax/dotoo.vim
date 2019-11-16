@@ -6,7 +6,7 @@
 " -----------------------------------------------------------------------------
 
 " Inline markup
-" *bold*, /italic/, _underline_, +strike-through+, =code=, ~verbatim~, $LaTeX$
+" *bold*, /italic/, _underline_, +strike-through+, =code=, ~verbatim~
 " Note:
 " - /italic/ is rendered as reverse in most terms (works fine in gVim, though)
 " - +strike-through+ doesn't work on Vim / gVim

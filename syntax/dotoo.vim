@@ -225,12 +225,12 @@ hi def link hyperlink Underlined
 if !exists('g:loaded_SyntaxRange')
   let s:contains .= ',dotoo_math'
   syntax include @LATEX syntax/tex.vim
-  syntax region dotoo_math     start="\\begin[.*]{.*}"  end="\\end{.*}" 		 keepend contains=@LATEX
-  syntax region dotoo_math     start="\\begin{.*}" 	 end="\\end{.*}" 		 keepend contains=@LATEX
-  syntax region dotoo_math     start="\\\[" 				 end="\\\]" 			 keepend contains=@LATEX
-  syntax region dotoo_math     start="\S\@<=\$\|\$\S\@="   end="\S\@<=\$\|\$\S\@="  keepend oneline contains=@LATEX
-  syntax region dotoo_math     start=/\$\$/                end=/\$\$/              keepend contains=@LATEX
-  syntax region dotoo_math     start=/\\\@<!\\\[/          end=/\\\@<!\\\]/        keepend contains=@LATEX
+  syntax region dotoo_math start="\S\@<=\$\|\$\S\@=" end="\S\@<=\$\|\$\S\@=" keepend oneline contains=@LATEX
+  syntax region dotoo_math start="\\begin[.*]{.*}"   end="\\end{.*}.*"       keepend contains=@LATEX
+  syntax region dotoo_math start="\\begin{.*}"       end="\\end{.*}.*"       keepend contains=@LATEX
+  syntax region dotoo_math start="\\\["              end="\\\]"              keepend contains=@LATEX
+  syntax region dotoo_math start=/\$\$/              end=/\$\$/              keepend contains=@LATEX
+  syntax region dotoo_math start=/\\\@<!\\\[/        end=/\\\@<!\\\]/        keepend contains=@LATEX
   hi def link dotoo_math     String
 endif
 "}}}

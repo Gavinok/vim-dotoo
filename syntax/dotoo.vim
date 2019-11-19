@@ -36,7 +36,7 @@ hi def dotoo_underline term=underline cterm=underline gui=underline
 " Headings: {{{
 "" Enable Syntax HL: {{{
 let s:contains = ' contains=dotoo_timestamp,dotoo_subtask_percent,dotoo_subtask_number,dotoo_subtask_percent_100,'.
-      \ 'dotoo_subtask_number_all,dotoo_list_checkbox,dotoo_bold,dotoo_math,dotoo_italic,dotoo_underline,' .
+      \ 'dotoo_subtask_number_all,dotoo_list_checkbox,dotoo_bold,dotoo_italic,dotoo_underline,' .
       \ 'dotoo_code,dotoo_verbatim'
 if g:dotoo_heading_shade_leading_stars == 1
   let s:contains .= ',dotoo_shade_stars'

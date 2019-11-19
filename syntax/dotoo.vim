@@ -222,11 +222,18 @@ hi def link hyperlink Underlined
 " - the conceal settings follows your g:tex_conceal setting for
 "   more info run :h tex-conceal.
 " Ref: https://orgmode.org/manual/LaTeX-fragments.html#LaTeX-fragments
-syntax include @LATEX syntax/tex.vim
-syntax region dotoo_math      start="\S\@<=\$\|\$\S\@="   end="\S\@<=\$\|\$\S\@="  keepend oneline contains=@LATEX
-syntax region dotoo_math     start=/\$\$/                end=/\$\$/              keepend contains=@LATEX
-syntax region dotoo_math     start=/\\\@<!\\\[/          end=/\\\@<!\\\]/        keepend contains=@LATEX
-hi def link dotoo_math     String
+if !exists('g:loaded_SyntaxRange')
+  let s:contains .= ',dotoo_math'
+  syntax include @LATEX syntax/tex.vim
+  syntax region dotoo_math     start="\\begin[.*]{.*}"  end="\\end{.*}" 		 keepend contains=@LATEX
+  syntax region dotoo_math     start="\\begin{.*}" 	 end="\\end{.*}" 		 keepend contains=@LATEX
+  syntax region dotoo_math     start="\\\[" 				 end="\\\]" 			 keepend contains=@LATEX
+  syntax region dotoo_math     start="\S\@<=\$\|\$\S\@="   end="\S\@<=\$\|\$\S\@="  keepend oneline contains=@LATEX
+  syntax region dotoo_math     start=/\$\$/                end=/\$\$/              keepend contains=@LATEX
+  syntax region dotoo_math     start=/\\\@<!\\\[/          end=/\\\@<!\\\]/        keepend contains=@LATEX
+  hi def link dotoo_math     String
+endif
+"}}}
 " Comments: {{{
 syntax match dotoo_comment /^#.*/
 hi def link dotoo_comment Comment
@@ -323,6 +330,7 @@ if exists('g:loaded_SyntaxRange')
   call SyntaxRange#Include('\\begin[.*]{.*}', '\\end{.*}', 'tex')
   call SyntaxRange#Include('\\begin{.*}', '\\end{.*}', 'tex')
   call SyntaxRange#Include('\\\[', '\\\]', 'tex')
+  call SyntaxRange#Include('\S\@<=\$\|\$\S\@=', "\S\@<=\$\|\$\S\@=", 'tex')
 endif
 " }}}
 
